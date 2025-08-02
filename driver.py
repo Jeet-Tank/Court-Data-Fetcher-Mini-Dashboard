@@ -105,7 +105,7 @@ def get_case():
         flash=flash)
 
         if result is None:
-            flash("No case data found for the given inputs.", "warning")
+            # flash("No case data found for the given inputs.", "warning")
             return redirect(url_for("home"))
 
         response_data , response_html = result

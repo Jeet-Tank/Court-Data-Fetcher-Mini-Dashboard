@@ -88,7 +88,7 @@ def fetch_case_data(case_type, case_number, case_year,flash=None):
 
     except TimeoutException:
         if flash:
-            flash("Timeout while waiting for page elements.", "warning")
+            flash("Case information not found, Please try again.", "warning")
         return None
 
     except selenium.common.exceptions.NoSuchElementException:
