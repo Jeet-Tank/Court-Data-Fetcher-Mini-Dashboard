@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Court Data Fetcher</title>
+    {{ bootstrap.load_css() }}
+      <link href="{{url_for('static',filename='css/style.css')}}" rel="stylesheet">
+    </head>
+  <body>
+    <div id="main">
+      <div id="input">
+      {% from 'bootstrap4/form.html' import render_form %}
+      {{render_form(case_form,action=url_for('case'))}}
+      </div>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div id="flash-messages">
+            {% for category, message in messages %}
+              <div class="flash {{ category }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+      {%if result%}
+      <div id="dashboard">
+        <div id="status">
+          <div>
+            <h2>Case Number:</h2> <h4>{{result['number']}}</h4>
+          </div>
+          <div>  
+            <h2>Status:</h2><h4>{{result['status']}}</h4>
+          </div>
+        </div>
+        <div id="case_parties">
+          <div>
+            <h3>Petitioner: {{result['petitioner']}}</h3>
+            <h3>Respondent: {{result['respondent']}}</h3>
+          </div>
+          <div>
+            <h3>Next Date: {{result['next_date']}}</h3>
+            <h3>Last Date: {{result['last_date']}}</h3>
+          </div>
+        </div>
+        <div id="orders">
+          <table>
+            <thead>
+              <tr>
+                <th><h4>Orders/Judgement</h4></th>
+                <th><h4>Date Issued</h4></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for doc in result['order_documents'] %}
+              <tr>
+                <td><a href="{{url_for('download')}}?file={{doc}}">Download Order</a></td>
+                <td><h4>{{result['order_dates'][loop.index0]}}</h4></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>
